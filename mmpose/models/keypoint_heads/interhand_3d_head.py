@@ -202,9 +202,7 @@ class Heatmap1DHead(nn.Module):
         self.in_channels = in_channels
         self.heatmap_size = heatmap_size
 
-        feature_dims = [in_channels] + \
-                       [dim for dim in hidden_dims] + \
-                       [heatmap_size]
+        feature_dims = [in_channels, *hidden_dims, heatmap_size]
         self.fc = self._make_linear_layers(feature_dims, relu_final=False)
 
     def soft_argmax_1d(self, heatmap1d):
