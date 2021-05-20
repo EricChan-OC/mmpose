@@ -120,3 +120,5 @@ work_dirs/
 *.pth
 
 *.DS_Store
+
+temp_logs/
