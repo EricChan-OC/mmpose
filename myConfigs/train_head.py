@@ -4,7 +4,7 @@ resume_from = None
 dist_params = dict(backend='nccl')
 workflow = [('train', 1)]
 checkpoint_config = dict(interval=10)
-evaluation = dict(interval=10, metric='PCK', key_indicator='PCK')
+evaluation = dict(interval=50, metric='PCK', key_indicator='PCK')
 
 optimizer = dict(
     type='Adam',
@@ -134,7 +134,7 @@ val_pipeline = [
 dataset_type = 'AnimalHorse10Dataset'
 data_root = 'data/cattle_head'
 data = dict(
-    samples_per_gpu=32,
+    samples_per_gpu=64,
     workers_per_gpu=2,
     val_dataloader=dict(samples_per_gpu=32),
     test_dataloader=dict(samples_per_gpu=32),
