@@ -26,15 +26,15 @@ log_config = dict(
     ])
 
 channel_cfg = dict(
-    num_output_channels=10,
-    dataset_joints=10,
+    num_output_channels=9,
+    dataset_joints=9,
     dataset_channel=[
         [
-            0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+            0, 1, 2, 3, 4, 5, 6, 7, 8
         ],
     ],
     inference_channel=[
-        0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+        0, 1, 2, 3, 4, 5, 6, 7, 8
     ])
 
 # model settings
@@ -101,7 +101,7 @@ val_pipeline = [
 ]
 
 dataset_type = 'AnimalHorse10Dataset'
-data_root = 'data/cattle_head'
+data_root = 'data/cattle_leg_front'
 data = dict(
     samples_per_gpu=32,
     workers_per_gpu=2,
