@@ -101,9 +101,9 @@ val_pipeline = [
 ]
 
 dataset_type = 'AnimalHorse10Dataset'
-data_root = 'data/cattle_head'
+data_root = 'data/cattle_tail'
 data = dict(
-    samples_per_gpu=64,
+    samples_per_gpu=32,
     workers_per_gpu=2,
     val_dataloader=dict(samples_per_gpu=32),
     test_dataloader=dict(samples_per_gpu=32),
