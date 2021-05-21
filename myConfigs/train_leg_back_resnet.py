@@ -34,7 +34,7 @@ channel_cfg = dict(
         ],
     ],
     inference_channel=[
-         0, 1, 2, 3, 4, 5, 6, 7, 8
+        0, 1, 2, 3, 4, 5, 6, 7, 8
     ])
 
 # model settings
