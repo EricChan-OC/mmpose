@@ -514,9 +514,9 @@ def inference_bottom_up_pose_model(model,
 def vis_pose_result(model,
                     img,
                     result,
-                    radius=4,
-                    thickness=1,
-                    kpt_score_thr=0.3,
+                    radius=8,
+                    thickness=2,
+                    kpt_score_thr=0.5,
                     dataset='TopDownCocoDataset',
                     show=False,
                     out_file=None):
@@ -543,7 +543,7 @@ def vis_pose_result(model,
                         [51, 153, 255], [255, 153, 153], [255, 102, 102],
                         [255, 51, 51], [153, 255, 153], [102, 255, 102],
                         [51, 255, 51], [0, 255, 0], [0, 0, 255], [255, 0, 0],
-                        [255, 255, 255]])
+                        [255, 255, 255], [137, 87, 29], [241, 153, 55]])
 
     if dataset in ('TopDownCocoDataset', 'BottomUpCocoDataset',
                    'TopDownOCHumanDataset', 'AnimalMacaqueDataset'):
@@ -683,15 +683,11 @@ def vis_pose_result(model,
         kpt_score_thr = 0
 
     elif dataset == 'AnimalHorse10Dataset':
-        skeleton = [[1, 2], [2, 13], [13, 17], [17, 22], [22, 18], [18, 12],
-                    [12, 11], [11, 9], [9, 10], [10, 13], [3, 4], [4, 5],
-                    [6, 7], [7, 8], [14, 15], [15, 16], [19, 20], [20, 21]]
+        #[0, 1],
+        skeleton = [[0, 4], [2, 4], [0, 2], [1, 3], [0, 1], [2, 3], [1, 5], [3, 6], [5, 7], [6, 8], [7, 9], [8, 9], [5, 6], [7, 8], [4, 9]]
 
-        pose_limb_color = palette[[4] * 10 + [6] * 2 + [6] * 2 + [7] * 2 +
-                                  [7] * 2]
-        pose_kpt_color = palette[[
-            4, 4, 6, 6, 6, 6, 6, 6, 4, 4, 4, 4, 4, 7, 7, 7, 4, 4, 7, 7, 7, 4
-        ]]
+        pose_limb_color = palette[[-2] * 15]
+        pose_kpt_color = palette[[-1] * 10]
 
     elif dataset == 'AnimalFlyDataset':
         skeleton = [[2, 1], [3, 1], [4, 1], [5, 4], [6, 5], [8, 7], [9, 8],

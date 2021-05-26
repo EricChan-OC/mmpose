@@ -38,7 +38,9 @@ def main():
         '--kpt-thr', type=float, default=0.3, help='Keypoint score threshold')
 
     args = parser.parse_args()
-
+    print(args.show)
+    print()
+    print(args.out_img_root)
     assert args.show or (args.out_img_root != '')
 
     coco = COCO(args.json_file)

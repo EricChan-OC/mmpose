@@ -290,6 +290,8 @@ class TopDown(BasePose):
             for _, kpts in enumerate(pose_result):
                 # draw each point on image
                 if pose_kpt_color is not None:
+                    #pose_kpt_color = pose_kpt_color[0:9]
+                    #print('pose_kpt_color', pose_kpt_color)
                     assert len(pose_kpt_color) == len(kpts)
                     for kid, kpt in enumerate(kpts):
                         x_coord, y_coord, kpt_score = int(kpt[0]), int(
@@ -318,8 +320,14 @@ class TopDown(BasePose):
 
                 # draw limbs
                 if skeleton is not None and pose_limb_color is not None:
+                    print('color: ', len(pose_limb_color), len(skeleton))
+                    #print(skeleton)
                     assert len(pose_limb_color) == len(skeleton)
+                    #print(kpts)
                     for sk_id, sk in enumerate(skeleton):
+                        #print(sk_id)
+                        #print(sk)
+                        #print('************')
                         pos1 = (int(kpts[sk[0] - 1, 0]), int(kpts[sk[0] - 1,
                                                                   1]))
                         pos2 = (int(kpts[sk[1] - 1, 0]), int(kpts[sk[1] - 1,
