@@ -290,8 +290,6 @@ class TopDown(BasePose):
             for _, kpts in enumerate(pose_result):
                 # draw each point on image
                 if pose_kpt_color is not None:
-                    #pose_kpt_color = pose_kpt_color[0:9]
-                    #print('pose_kpt_color', pose_kpt_color)
                     assert len(pose_kpt_color) == len(kpts)
                     for kid, kpt in enumerate(kpts):
                         x_coord, y_coord, kpt_score = int(kpt[0]), int(
@@ -304,6 +302,23 @@ class TopDown(BasePose):
                                            (int(x_coord), int(y_coord)),
                                            radius, (int(r), int(g), int(b)),
                                            -1)
+                                # custom index label
+                                # font
+                                font = cv2.FONT_HERSHEY_SIMPLEX
+
+                                # org
+                                org = (50, 50)
+
+                                # fontScale
+                                fontScale = 1
+
+                                # Blue color in BGR
+                                color = (255, 0, 0)
+
+                                # Line thickness of 2 px
+                                thickness = 2
+                                cv2.putText(img_copy, str(kid), (int(x_coord), int(y_coord)-10), font, 
+                               fontScale, color, thickness, cv2.LINE_AA)
                                 transparency = max(0, min(1, kpt_score))
                                 cv2.addWeighted(
                                     img_copy,
@@ -317,10 +332,27 @@ class TopDown(BasePose):
                                 cv2.circle(img, (int(x_coord), int(y_coord)),
                                            radius, (int(r), int(g), int(b)),
                                            -1)
+                                # custom index label
+                                # font
+                                font = cv2.FONT_HERSHEY_SIMPLEX
+
+                                # org
+                                org = (50, 50)
+
+                                # fontScale
+                                fontScale = 1
+
+                                # Blue color in BGR
+                                color = (255, 0, 0)
+
+                                # Line thickness of 2 px
+                                thickness = 2
+                                cv2.putText(img, str(kid), (int(x_coord), int(y_coord)-10), font, 
+                                           fontScale, color, thickness, cv2.LINE_AA)
 
                 # draw limbs
                 if skeleton is not None and pose_limb_color is not None:
-                    print('color: ', len(pose_limb_color), len(skeleton))
+                    #print('color: ', len(pose_limb_color), len(skeleton))
                     #print(skeleton)
                     assert len(pose_limb_color) == len(skeleton)
                     #print(kpts)

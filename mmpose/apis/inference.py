@@ -544,7 +544,7 @@ def vis_pose_result(model,
                         [255, 51, 51], [153, 255, 153], [102, 255, 102],
                         [51, 255, 51], [0, 255, 0], [0, 0, 255], [255, 0, 0],
                         [255, 255, 255], [137, 87, 29], [241, 153, 55]])
-
+    custom_palette = np.array([[137, 87, 29], [241, 153, 55]])
     if dataset in ('TopDownCocoDataset', 'BottomUpCocoDataset',
                    'TopDownOCHumanDataset', 'AnimalMacaqueDataset'):
         # show the results
@@ -684,10 +684,12 @@ def vis_pose_result(model,
 
     elif dataset == 'AnimalHorse10Dataset':
         #[0, 1],
-        skeleton = [[0, 4], [2, 4], [0, 2], [1, 3], [0, 1], [2, 3], [1, 5], [3, 6], [5, 7], [6, 8], [7, 9], [8, 9], [5, 6], [7, 8], [4, 9]]
+        skeleton = [ [1, 2], [2, 3], 
+                           [3, 4], [8, 7], [7, 6],
+                           [6, 5], [5, 4]]
 
-        pose_limb_color = palette[[-2] * 15]
-        pose_kpt_color = palette[[-1] * 10]
+        pose_limb_color = custom_palette[[0] * 7]
+        pose_kpt_color = custom_palette[[1] * 9]
 
     elif dataset == 'AnimalFlyDataset':
         skeleton = [[2, 1], [3, 1], [4, 1], [5, 4], [6, 5], [8, 7], [9, 8],
