@@ -309,6 +309,10 @@ body_result.append({'bbox': cow_box_1})
 preds2, _ = process_model(model_spine, dataset_spine, body_result, image)
 img = vis_pose(img, preds2)
 
+for bbox in [head_box_1, cow_box_1]:
+    x,y,w,h = bbox
+    cv2.rectangle(img, (int(x), int(y)), (int(x+w), int(y+h)), (255, 0, 0), 2)
+
 cv2.imshow('image',img)
 cv2.waitKey(0)
 
