@@ -124,3 +124,7 @@ work_dirs/
 temp_logs/
 inference_result/
 sagemaker/
+debug_imgs/
+frame_img/
+json_data/
+video_data/

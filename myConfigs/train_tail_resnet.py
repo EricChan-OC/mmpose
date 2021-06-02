@@ -100,6 +100,7 @@ val_pipeline = [
         ]),
 ]
 
+test_pipeline = val_pipeline
 dataset_type = 'AnimalHorse10Dataset'
 data_root = 'data/cattle_leg_back'
 data = dict(
@@ -124,5 +125,5 @@ data = dict(
         ann_file=f'{data_root}/annotations/test.json',
         img_prefix=f'{data_root}/images/test_img/',
         data_cfg=data_cfg,
-        pipeline=val_pipeline),
+        pipeline=test_pipeline),
 )
