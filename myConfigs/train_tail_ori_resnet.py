@@ -30,53 +30,22 @@ channel_cfg = dict(
     dataset_joints=5,
     dataset_channel=[
         [
-            0, 1, 2, 3, 4
+            0, 1, 2, 3, 4,
         ],
     ],
     inference_channel=[
-        0, 1, 2, 3, 4
+         0, 1, 2, 3, 4,
     ])
 
 # model settings
 model = dict(
     type='TopDown',
-    pretrained='https://download.openmmlab.com/mmpose/'
-    'pretrain_models/hrnet_w48-8ef0771d.pth',
-    backbone=dict(
-        type='HRNet',
-        in_channels=3,
-        extra=dict(
-            stage1=dict(
-                num_modules=1,
-                num_branches=1,
-                block='BOTTLENECK',
-                num_blocks=(4, ),
-                num_channels=(64, )),
-            stage2=dict(
-                num_modules=1,
-                num_branches=2,
-                block='BASIC',
-                num_blocks=(4, 4),
-                num_channels=(48, 96)),
-            stage3=dict(
-                num_modules=4,
-                num_branches=3,
-                block='BASIC',
-                num_blocks=(4, 4, 4),
-                num_channels=(48, 96, 192)),
-            stage4=dict(
-                num_modules=3,
-                num_branches=4,
-                block='BASIC',
-                num_blocks=(4, 4, 4, 4),
-                num_channels=(48, 96, 192, 384))),
-    ),
+    pretrained='torchvision://resnet152',
+    backbone=dict(type='ResNet', depth=152),
     keypoint_head=dict(
         type='TopDownSimpleHead',
-        in_channels=48,
+        in_channels=2048,
         out_channels=channel_cfg['num_output_channels'],
-        num_deconv_layers=0,
-        extra=dict(final_conv_kernel=1, ),
         loss_keypoint=dict(type='JointsMSELoss', use_target_weight=True)),
     train_cfg=dict(),
     test_cfg=dict(
@@ -133,7 +102,7 @@ val_pipeline = [
 
 test_pipeline = val_pipeline
 dataset_type = 'AnimalHorse10Dataset'
-data_root = 'data/cattle_tail'
+data_root = 'data/cattle_tail_ori'
 data = dict(
     samples_per_gpu=32,
     workers_per_gpu=2,

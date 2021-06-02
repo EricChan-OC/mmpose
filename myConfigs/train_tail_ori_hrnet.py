@@ -131,6 +131,7 @@ val_pipeline = [
         ]),
 ]
 
+
 test_pipeline = val_pipeline
 dataset_type = 'AnimalHorse10Dataset'
 data_root = 'data/cattle_tail'
