@@ -3,7 +3,7 @@ load_from = None
 resume_from = None
 dist_params = dict(backend='nccl')
 workflow = [('train', 1)]
-checkpoint_config = dict(interval=10)
+checkpoint_config = dict(interval=50)
 evaluation = dict(interval=5, metric='PCK', key_indicator='PCK')
 
 optimizer = dict(
@@ -26,15 +26,15 @@ log_config = dict(
     ])
 
 channel_cfg = dict(
-    num_output_channels=10,
-    dataset_joints=10,
+    num_output_channels=5,
+    dataset_joints=5,
     dataset_channel=[
         [
-            0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+            0, 1, 2, 3, 4,
         ],
     ],
     inference_channel=[
-        0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+         0, 1, 2, 3, 4,
     ])
 
 # model settings
@@ -130,11 +130,12 @@ val_pipeline = [
             'flip_pairs'
         ]),
 ]
+
 test_pipeline = val_pipeline
 dataset_type = 'AnimalHorse10Dataset'
-data_root = 'data/cattle_head'
+data_root = 'data/horse_tail'
 data = dict(
-    samples_per_gpu=64,
+    samples_per_gpu=32,
     workers_per_gpu=2,
     val_dataloader=dict(samples_per_gpu=32),
     test_dataloader=dict(samples_per_gpu=32),
@@ -146,8 +147,8 @@ data = dict(
         pipeline=train_pipeline),
     val=dict(
         type=dataset_type,
-        ann_file=f'{data_root}/annotations/test.json',
-        img_prefix=f'{data_root}/images/test_img/',
+        ann_file=f'{data_root}/annotations/val.json',
+        img_prefix=f'{data_root}/images/val_img/',
         data_cfg=data_cfg,
         pipeline=val_pipeline),
     test=dict(
