@@ -6,6 +6,8 @@ from mmpose.core.post_processing import (affine_transform, fliplr_joints,
                                          warp_affine_joints)
 from mmpose.datasets.registry import PIPELINES
 
+import time
+
 
 @PIPELINES.register_module()
 class TopDownRandomFlip:
@@ -187,14 +189,35 @@ class TopDownAffine:
     def __call__(self, results):
         image_size = results['ann_info']['image_size']
 
-        img = results['img']
         joints_3d = results['joints_3d']
         joints_3d_visible = results['joints_3d_visible']
         c = results['center']
         s = results['scale']
         r = results['rotation']
+        print('csr')
+        print(c)
+        print((int(c[0]), int(c[1])))
+        print(s)
+        #s = np.array([3, 3])
+        print(s)
+        print(r)
+        #####
+        img = results['img']
+        # Radius of circle
+        radius = 4
 
+        # Red color in BGR
+        color = (0, 0, 255)
+
+        # Line thickness of -1 px
+        thickness = -1
+        im_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        im_rgb = cv2.circle(im_rgb, (int(c[0]), int(c[1])), radius, color, thickness)
+        cv2.imwrite('post_process_images/ori_savedImage.jpg', im_rgb)
+        #####
+        #print(self.use_udp)
         if self.use_udp:
+            print('use_udp')
             trans = get_warp_matrix(r, c * 2.0, image_size - 1.0, s * 200.0)
             img = cv2.warpAffine(
                 img,
@@ -208,11 +231,24 @@ class TopDownAffine:
                 img,
                 trans, (int(image_size[0]), int(image_size[1])),
                 flags=cv2.INTER_LINEAR)
+
             for i in range(results['ann_info']['num_joints']):
                 if joints_3d_visible[i, 0] > 0.0:
                     joints_3d[i,
                               0:2] = affine_transform(joints_3d[i, 0:2], trans)
-
+        # ****self
+        # Display the image
+        # Filename
+        # Using cv2.imwrite() method
+        # Saving the image
+        print('save image')
+        im_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        cv2.imwrite('post_process_images/savedImage.jpg', im_rgb)
+        print(joints_3d)
+        time.sleep(3)
+#         print('joints_3d_visible')
+#         print(joints_3d_visible)
+        # end
         results['img'] = img
         results['joints_3d'] = joints_3d
         results['joints_3d_visible'] = joints_3d_visible
@@ -667,7 +703,6 @@ class TopDownRandomTranslation:
         ``[-trans_factor, trans_factor] * [W, H] + center``.
         trans_prob (float): Probability of random translation.
     """
-
     def __init__(self, trans_factor=0.15, trans_prob=1.0):
         self.trans_factor = trans_factor
         self.trans_prob = trans_prob

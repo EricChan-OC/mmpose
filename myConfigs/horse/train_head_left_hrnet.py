@@ -4,7 +4,7 @@ resume_from = None
 dist_params = dict(backend='nccl')
 workflow = [('train', 1)]
 checkpoint_config = dict(interval=50)
-evaluation = dict(interval=10, metric='PCK', key_indicator='PCK')
+evaluation = dict(interval=5, metric='PCK', key_indicator='PCK')
 
 optimizer = dict(
     type='Adam',
@@ -26,26 +26,57 @@ log_config = dict(
     ])
 
 channel_cfg = dict(
-    num_output_channels=10,
-    dataset_joints=10,
+    num_output_channels=6,
+    dataset_joints=6,
     dataset_channel=[
         [
-            0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+            0, 1, 2, 3, 4, 5
         ],
     ],
     inference_channel=[
-        0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+         0, 1, 2, 3, 4, 5
     ])
 
 # model settings
 model = dict(
     type='TopDown',
-    pretrained='torchvision://resnet152',
-    backbone=dict(type='ResNet', depth=152),
+    pretrained='https://download.openmmlab.com/mmpose/'
+    'pretrain_models/hrnet_w48-8ef0771d.pth',
+    backbone=dict(
+        type='HRNet',
+        in_channels=3,
+        extra=dict(
+            stage1=dict(
+                num_modules=1,
+                num_branches=1,
+                block='BOTTLENECK',
+                num_blocks=(4, ),
+                num_channels=(64, )),
+            stage2=dict(
+                num_modules=1,
+                num_branches=2,
+                block='BASIC',
+                num_blocks=(4, 4),
+                num_channels=(48, 96)),
+            stage3=dict(
+                num_modules=4,
+                num_branches=3,
+                block='BASIC',
+                num_blocks=(4, 4, 4),
+                num_channels=(48, 96, 192)),
+            stage4=dict(
+                num_modules=3,
+                num_branches=4,
+                block='BASIC',
+                num_blocks=(4, 4, 4, 4),
+                num_channels=(48, 96, 192, 384))),
+    ),
     keypoint_head=dict(
         type='TopDownSimpleHead',
-        in_channels=2048,
+        in_channels=48,
         out_channels=channel_cfg['num_output_channels'],
+        num_deconv_layers=0,
+        extra=dict(final_conv_kernel=1, ),
         loss_keypoint=dict(type='JointsMSELoss', use_target_weight=True)),
     train_cfg=dict(),
     test_cfg=dict(
@@ -65,8 +96,8 @@ data_cfg = dict(
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='TopDownRandomFlip', flip_prob=0.5),
-#     dict(
-#         type='TopDownGetRandomScaleRotation', rot_factor=40, scale_factor=0.5),
+    dict(
+        type='TopDownGetRandomScaleRotation', rot_factor=40, scale_factor=0.5),
     dict(type='TopDownAffine'),
     dict(type='ToTensor'),
     dict(
@@ -101,9 +132,8 @@ val_pipeline = [
 ]
 
 test_pipeline = val_pipeline
-
 dataset_type = 'AnimalHorse10Dataset'
-data_root = 'data/cattle_head'
+data_root = 'data/horse_head_left'
 data = dict(
     samples_per_gpu=32,
     workers_per_gpu=2,
@@ -112,19 +142,19 @@ data = dict(
     train=dict(
         type=dataset_type,
         ann_file=f'{data_root}/annotations/train.json',
-        img_prefix=f'{data_root}/images/train_img/',
+        img_prefix=f'{data_root}/images/',
         data_cfg=data_cfg,
         pipeline=train_pipeline),
     val=dict(
         type=dataset_type,
-        ann_file=f'{data_root}/annotations/test.json',
-        img_prefix=f'{data_root}/images/test_img/',
+        ann_file=f'{data_root}/annotations/val.json',
+        img_prefix=f'{data_root}/images/',
         data_cfg=data_cfg,
         pipeline=val_pipeline),
     test=dict(
         type=dataset_type,
         ann_file=f'{data_root}/annotations/test.json',
-        img_prefix=f'{data_root}/images/test_img/',
+        img_prefix=f'{data_root}/images/',
         data_cfg=data_cfg,
         pipeline=test_pipeline),
 )
