@@ -50,7 +50,6 @@ def train_model(model,
         seed=cfg.seed)
     dataloader_setting = dict(dataloader_setting,
                               **cfg.data.get('train_dataloader', {}))
-
     data_loaders = [
         build_dataloader(ds, **dataloader_setting) for ds in dataset
     ]

@@ -84,7 +84,7 @@ def test_top_down_pipeline():
 
     ann_ids = coco.getAnnIds(785)
     ann = coco.anns[ann_ids[0]]
-
+    print('*****************************************')
     num_joints = 17
     joints_3d = np.zeros((num_joints, 3), dtype=np.float32)
     joints_3d_visible = np.zeros((num_joints, 3), dtype=np.float32)

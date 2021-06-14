@@ -91,10 +91,11 @@ class AnimalBaseDataset(Dataset, metaclass=ABCMeta):
             center (np.ndarray[float32](2,)): center of the bbox (x, y).
             scale (np.ndarray[float32](2,)): scale of the bbox w & h.
         """
+        #print('_xywh2cs')
         aspect_ratio = self.ann_info['image_size'][0] / self.ann_info[
             'image_size'][1]
+       # print('aspect_ratio', aspect_ratio)
         center = np.array([x + w * 0.5, y + h * 0.5], dtype=np.float32)
-
         if (not self.test_mode) and np.random.rand() < 0.3:
             center += 0.4 * (np.random.rand(2) - 0.5) * [w, h]
 
@@ -104,7 +105,8 @@ class AnimalBaseDataset(Dataset, metaclass=ABCMeta):
             w = h * aspect_ratio
 
         # pixel std is 200.0
-        scale = np.array([w / 200.0, h / 200.0], dtype=np.float32)
+        #scale = np.array([w / 200.0, h / 200.0], dtype=np.float32)
+        scale = np.array([1, 1], dtype=np.float32)
         # padding to include proper amount of context
         scale = scale * padding
 

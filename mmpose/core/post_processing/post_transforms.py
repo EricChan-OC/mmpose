@@ -222,7 +222,7 @@ def get_affine_transform(center,
     assert len(shift) == 2
 
     # pixel_std is 200.
-    scale_tmp = scale * 200.0
+    scale_tmp = scale * 256.0
 
     shift = np.array(shift)
     src_w = scale_tmp[0]

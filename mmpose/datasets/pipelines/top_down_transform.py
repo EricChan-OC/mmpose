@@ -7,7 +7,7 @@ from mmpose.core.post_processing import (affine_transform, fliplr_joints,
 from mmpose.datasets.registry import PIPELINES
 
 import time
-
+from PIL import Image, ImageDraw
 
 @PIPELINES.register_module()
 class TopDownRandomFlip:
@@ -27,6 +27,7 @@ class TopDownRandomFlip:
         self.flip_prob = flip_prob
 
     def __call__(self, results):
+        print('TopDownRandomFlip')
         """Perform data augmentation with random image flip."""
         img = results['img']
         joints_3d = results['joints_3d']
@@ -116,6 +117,7 @@ class TopDownHalfBodyTransform:
         return center, scale
 
     def __call__(self, results):
+        print('half_body_transform')
         """Perform data augmentation with half-body transform."""
         joints_3d = results['joints_3d']
         joints_3d_visible = results['joints_3d_visible']
@@ -127,6 +129,7 @@ class TopDownHalfBodyTransform:
                 results['ann_info'], joints_3d, joints_3d_visible)
 
             if c_half_body is not None and s_half_body is not None:
+                print('if c_half_body is not None and s_half_body is not None')
                 results['center'] = c_half_body
                 results['scale'] = s_half_body
 
@@ -151,6 +154,7 @@ class TopDownGetRandomScaleRotation:
         self.rot_prob = rot_prob
 
     def __call__(self, results):
+        print('TopDownGetRandomScaleRotation')
         """Perform data augmentation with random scaling & rotating."""
         s = results['scale']
 
@@ -187,72 +191,185 @@ class TopDownAffine:
         self.use_udp = use_udp
 
     def __call__(self, results):
-        image_size = results['ann_info']['image_size']
+#         image_size = results['ann_info']['image_size']
+#         joints_3d = results['joints_3d']
+#         joints_3d_visible = results['joints_3d_visible']
+#         c = results['center']
+#         s = results['scale']
+#         r = results['rotation']
+#         #sprint('results', results)
+# #         print('csr', c, s, r)
+# #         print((int(c[0]), int(c[1])))
+# #         x, y, w, h = results['bbox'][:4]
+# #         center = np.zeros((2), dtype=np.float32)
+# #         center[0] = x + w * 0.5
+# #         center[1] = y + h * 0.5
+# #         print('new c', center)
+#         #s = np.array([3, 3])
+#         #####
+# #         print('joints_3d original: ', joints_3d)
+# #         print('joints_3d_visible', joints_3d_visible)
+#         img = results['img']
+# #         print('image type: ', type(img))
+#         # Radius of circle
+#         radius = 6
 
-        joints_3d = results['joints_3d']
-        joints_3d_visible = results['joints_3d_visible']
-        c = results['center']
-        s = results['scale']
-        r = results['rotation']
-        print('csr')
-        print(c)
-        print((int(c[0]), int(c[1])))
-        print(s)
-        #s = np.array([3, 3])
-        print(s)
-        print(r)
-        #####
-        img = results['img']
-        # Radius of circle
-        radius = 4
+#         # Line thickness of -1 px
+#         print('save image before transform')
+#         im_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+#         # Start coordinate, here (5, 5)
+#         # represents the top left corner of rectangle
+#         start_point = (int(results['bbox'][0]), int(results['bbox'][1]))
+        
+#         # Ending coordinate, here (220, 220)
+#         # represents the bottom right corner of rectangle
+#         end_point = (int(results['bbox'][0]+results['bbox'][2]), int(results['bbox'][1]+results['bbox'][3]))
+#         print(start_point, end_point)
+#         # Blue color in BGR
+#         color = (255, 0, 0)
 
-        # Red color in BGR
-        color = (0, 0, 255)
 
-        # Line thickness of -1 px
-        thickness = -1
-        im_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        im_rgb = cv2.circle(im_rgb, (int(c[0]), int(c[1])), radius, color, thickness)
-        cv2.imwrite('post_process_images/ori_savedImage.jpg', im_rgb)
-        #####
-        #print(self.use_udp)
-        if self.use_udp:
-            print('use_udp')
-            trans = get_warp_matrix(r, c * 2.0, image_size - 1.0, s * 200.0)
-            img = cv2.warpAffine(
-                img,
-                trans, (int(image_size[0]), int(image_size[1])),
-                flags=cv2.INTER_LINEAR)
-            joints_3d[:, 0:2] = \
-                warp_affine_joints(joints_3d[:, 0:2].copy(), trans)
-        else:
-            trans = get_affine_transform(c, s, r, image_size)
-            img = cv2.warpAffine(
-                img,
-                trans, (int(image_size[0]), int(image_size[1])),
-                flags=cv2.INTER_LINEAR)
+#         # Using cv2.rectangle() method
+#         # Draw a rectangle with blue line borders of thickness of 2 px
+#         im_rgb = cv2.circle(im_rgb, (int(c[0]), int(c[1])), radius, color, -1)
+#         im_rgb = cv2.rectangle(im_rgb, start_point, end_point, color, 2)
+#         cv2.imwrite('post_process_images/'+str(c[0])+'_ori_savedImage.jpg', im_rgb)
+#         #####
+#         #print(self.use_udp)
+#         if self.use_udp:
+#             print('use_udp')
+#             trans = get_warp_matrix(r, c * 2.0, image_size - 1.0, s * 200.0)
+#             img = cv2.warpAffine(
+#                 img,
+#                 trans, (int(image_size[0]), int(image_size[1])),
+#                 flags=cv2.INTER_LINEAR)
+#             joints_3d[:, 0:2] = \
+#                 warp_affine_joints(joints_3d[:, 0:2].copy(), trans)
+#         else:
+#             trans = get_affine_transform(c, s, r, image_size)
+#             img = cv2.warpAffine(
+#                 img,
+#                 trans, (int(image_size[0]), int(image_size[1])),
+#                 flags=cv2.INTER_LINEAR)
 
-            for i in range(results['ann_info']['num_joints']):
-                if joints_3d_visible[i, 0] > 0.0:
-                    joints_3d[i,
-                              0:2] = affine_transform(joints_3d[i, 0:2], trans)
-        # ****self
-        # Display the image
-        # Filename
-        # Using cv2.imwrite() method
-        # Saving the image
-        print('save image')
-        im_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        cv2.imwrite('post_process_images/savedImage.jpg', im_rgb)
-        print(joints_3d)
-        time.sleep(3)
-#         print('joints_3d_visible')
-#         print(joints_3d_visible)
-        # end
-        results['img'] = img
-        results['joints_3d'] = joints_3d
-        results['joints_3d_visible'] = joints_3d_visible
+#             for i in range(results['ann_info']['num_joints']):
+#                 if joints_3d_visible[i, 0] > 0.0:
+#                     joints_3d[i,
+#                               0:2] = affine_transform(joints_3d[i, 0:2], trans)
+#         # ****self
+#         # Display the image
+#         # Filename
+#         # Saving the image
+#         print('save image after transform')
+#         im_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+#         cv2.imwrite('post_process_images/'+str(c[0])+'_savedImage.jpg', im_rgb)
+#         print('joints_3d after :', joints_3d)
+#         print('joints_3d_visible', joints_3d_visible)
+#         time.sleep(3)
 
+#         # end
+#         results['img'] = img
+#         results['joints_3d'] = joints_3d
+#         results['joints_3d_visible'] = joints_3d_visible
+#         print(type(results['img']))
+#         print(results['img'])
+#         print(type(results['joints_3d']))
+#         print(results['joints_3d'])
+#         print(cc)
+
+#         print(results['joints_3d'])
+#         print(results['bbox'])
+        cur_head = {}
+        cur_head['bbox'] = results['bbox']
+        cur_head['img'] = results['img']
+        # grab x and y coordinates of keypoints
+        cur_head['x'] = np.array(results['joints_3d'][:, :1].flatten())
+        cur_head['y'] = np.array(results['joints_3d'][:, 1:2].flatten())
+        img = Image.fromarray(cur_head['img'])
+#         print(cur_head['img'])
+#         print(cur_head['img'].shape)
+#         print(img.size)
+        #print('image type', type(img))
+#         print(cur_head['x'])
+#         print(cur_head['y'])
+        cur_head['bbox'][2] += cur_head['bbox'][0]
+        cur_head['bbox'][3] += cur_head['bbox'][1]
+#         crop_img = img.crop(cur_head['bbox'])
+#         crop_img.save('post_process_images/check_imgs.jpg')
+        cur_head['cropped'] = np.array(img.crop(cur_head['bbox']))
+        bbox = cur_head['bbox'].copy()
+        updated_x = cur_head['x'].copy()
+        updated_y = cur_head['y'].copy()
+        # move keypoint into cropped image
+        updated_x -= round(bbox[0])
+        updated_y -= round(bbox[1])
+
+        cur_head['x'] = updated_x
+        cur_head['y'] = updated_y
+#         print(cur_head['x'])
+#         print(cur_head['y'])
+        
+        # rescale images and annotations
+        size_x = 256
+        size_y = 256
+        
+        # draw keypoints in the image
+        # draw original 
+        img = Image.fromarray(cur_head['cropped'], 'RGB')    
+
+        x_start = img.size[0]
+        y_start = img.size[1]
+
+        # scale to the new size
+        img = Image.fromarray(cur_head['cropped'], 'RGB')
+        img.thumbnail((size_x, size_y), Image.ANTIALIAS)    
+        x_end = img.size[0]
+        y_end = img.size[1]
+
+        scale_x = x_end / x_start
+        scale_y = y_end / y_start
+        cur_head['x_scaled'] = []
+        cur_head['y_scaled'] = []
+        # scale keypoints
+        for coord in zip(cur_head['x'], cur_head['y']):
+            x = coord[0] * scale_x
+            y = coord[1] * scale_y
+            cur_head['x_scaled'].append(x)
+            cur_head['y_scaled'].append(y)
+
+        zipped = zip(cur_head['x_scaled'], cur_head['y_scaled'])
+        for coord in zipped:
+            x = coord[0] 
+            y = coord[1] 
+            r = 5
+
+        # draw lines
+        x = cur_head['x_scaled']
+        y = cur_head['y_scaled']
+
+        new_image = Image.new('RGB', (size_x, size_y), color = 'black')
+        new_image.paste(img)
+
+        cur_head['final_image'] = new_image
+#         draw = ImageDraw.Draw(cur_head['final_image'])
+#         for idx in range(len(cur_head['x_scaled'])):
+#             x_0 = cur_head['x_scaled'][idx]
+#             y_0 = cur_head['y_scaled'][idx]
+#             draw.ellipse((x_0, y_0, x_0+5, y_0+5), fill=255)
+#         cur_head['final_image'].save('post_process_images/check_final_imgs.jpg')
+ 
+#         print('scaled', cur_head['x_scaled'])
+#         print('scaled', cur_head['y_scaled'])
+        kp_list = []
+        for idx in range(len(cur_head['x_scaled'])):
+            x_0 = cur_head['x_scaled'][idx]
+            y_0 = cur_head['y_scaled'][idx]
+            kp_list.append([x_0, y_0, 0.0])
+        results['img'] = np.array(cur_head['final_image'])
+        results['joints_3d'] = np.array(kp_list)
+#         print(results['img'])
+#         print(results['joints_3d'])
+#         print(cc)
         return results
 
 
@@ -697,7 +814,6 @@ class TopDownRandomTranslation:
     Notes:
         bbox height: H
         bbox width: W
-
     Args:
         trans_factor (float): Translating center to
         ``[-trans_factor, trans_factor] * [W, H] + center``.
@@ -709,6 +825,7 @@ class TopDownRandomTranslation:
 
     def __call__(self, results):
         """Perform data augmentation with random translation."""
+        print('TopDownRandomTranslation')
         center = results['center']
         scale = results['scale']
         if np.random.rand() <= self.trans_prob:

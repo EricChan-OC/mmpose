@@ -86,7 +86,9 @@ class AnimalHorse10Dataset(AnimalBaseDataset):
 
             ann_ids = self.coco.getAnnIds(imgIds=img_id, iscrowd=False)
             objs = self.coco.loadAnns(ann_ids)
-
+            #print('ann_ids', ann_ids)
+#             if len(objs)> 0 and objs[0]['image_id'] == 0:
+#                 print('objs', objs)
             for obj in objs:
                 if max(obj['keypoints']) == 0:
                     continue
@@ -96,9 +98,10 @@ class AnimalHorse10Dataset(AnimalBaseDataset):
                 keypoints = np.array(obj['keypoints']).reshape(-1, 3)
                 joints_3d[:, :2] = keypoints[:, :2]
                 joints_3d_visible[:, :2] = np.minimum(1, keypoints[:, 2:3])
-
+                #if obj['image_id'] == 0:
+                #print('obj[bbox]', obj['bbox'])
                 # use 1.25 padded bbox as input
-                center, scale = self._xywh2cs(*obj['bbox'][:4], 1.25)
+                center, scale = self._xywh2cs(*obj['bbox'][:4], 1)
 
                 image_file = os.path.join(self.img_prefix,
                                           self.id2name[img_id])

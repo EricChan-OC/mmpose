@@ -2,6 +2,7 @@ import warnings
 from collections.abc import Sequence
 
 import mmcv
+import cv2
 import numpy as np
 from mmcv.parallel import DataContainer as DC
 from mmcv.utils import build_from_cfg
@@ -135,7 +136,8 @@ class Collect:
         """
         if 'ann_info' in results:
             results.update(results['ann_info'])
-
+#         print('collect')
+#         print(results)
         data = {}
         for key in self.keys:
             if isinstance(key, tuple):
