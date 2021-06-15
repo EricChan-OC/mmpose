@@ -7,8 +7,11 @@ from mmpose.core.post_processing import (affine_transform, fliplr_joints,
 from mmpose.datasets.registry import PIPELINES
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import time
 from PIL import Image, ImageDraw
+=======
+>>>>>>> parent of 7c56a2c... update cofigs
 =======
 >>>>>>> parent of 7c56a2c... update cofigs
 
