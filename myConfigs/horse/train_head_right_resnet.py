@@ -64,9 +64,9 @@ data_cfg = dict(
 
 train_pipeline = [
     dict(type='LoadImageFromFile'),
-    dict(type='TopDownRandomFlip', flip_prob=0.5),
-    dict(
-        type='TopDownGetRandomScaleRotation', rot_factor=40, scale_factor=0.5),
+#     dict(type='TopDownRandomFlip', flip_prob=0.5),
+#     dict(
+#         type='TopDownGetRandomScaleRotation', rot_factor=40, scale_factor=0.5),
     dict(type='TopDownAffine'),
     dict(type='ToTensor'),
     dict(

@@ -105,8 +105,8 @@ class AnimalBaseDataset(Dataset, metaclass=ABCMeta):
             w = h * aspect_ratio
 
         # pixel std is 200.0
-        #scale = np.array([w / 200.0, h / 200.0], dtype=np.float32)
-        scale = np.array([1, 1], dtype=np.float32)
+        scale = np.array([w / 200.0, h / 200.0], dtype=np.float32)
+        #scale = np.array([1, 1], dtype=np.float32)
         # padding to include proper amount of context
         scale = scale * padding
 

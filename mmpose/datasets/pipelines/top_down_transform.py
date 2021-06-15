@@ -210,30 +210,30 @@ class TopDownAffine:
 # #         print('joints_3d original: ', joints_3d)
 # #         print('joints_3d_visible', joints_3d_visible)
 #         img = results['img']
-# #         print('image type: ', type(img))
-#         # Radius of circle
-#         radius = 6
+# # #         print('image type: ', type(img))
+# #         # Radius of circle
+# #         radius = 6
 
-#         # Line thickness of -1 px
-#         print('save image before transform')
-#         im_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-#         # Start coordinate, here (5, 5)
-#         # represents the top left corner of rectangle
-#         start_point = (int(results['bbox'][0]), int(results['bbox'][1]))
+# #         # Line thickness of -1 px
+# #         print('save image before transform')
+# #         im_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+# #         # Start coordinate, here (5, 5)
+# #         # represents the top left corner of rectangle
+# #         start_point = (int(results['bbox'][0]), int(results['bbox'][1]))
         
-#         # Ending coordinate, here (220, 220)
-#         # represents the bottom right corner of rectangle
-#         end_point = (int(results['bbox'][0]+results['bbox'][2]), int(results['bbox'][1]+results['bbox'][3]))
-#         print(start_point, end_point)
-#         # Blue color in BGR
-#         color = (255, 0, 0)
+# #         # Ending coordinate, here (220, 220)
+# #         # represents the bottom right corner of rectangle
+# #         end_point = (int(results['bbox'][0]+results['bbox'][2]), int(results['bbox'][1]+results['bbox'][3]))
+# #         print(start_point, end_point)
+# #         # Blue color in BGR
+# #         color = (255, 0, 0)
 
 
 #         # Using cv2.rectangle() method
 #         # Draw a rectangle with blue line borders of thickness of 2 px
-#         im_rgb = cv2.circle(im_rgb, (int(c[0]), int(c[1])), radius, color, -1)
-#         im_rgb = cv2.rectangle(im_rgb, start_point, end_point, color, 2)
-#         cv2.imwrite('post_process_images/'+str(c[0])+'_ori_savedImage.jpg', im_rgb)
+# #         im_rgb = cv2.circle(im_rgb, (int(c[0]), int(c[1])), radius, color, -1)
+# #         im_rgb = cv2.rectangle(im_rgb, start_point, end_point, color, 2)
+# #         cv2.imwrite('post_process_images/'+str(c[0])+'_ori_savedImage.jpg', im_rgb)
 #         #####
 #         #print(self.use_udp)
 #         if self.use_udp:
@@ -260,25 +260,27 @@ class TopDownAffine:
 #         # Display the image
 #         # Filename
 #         # Saving the image
-#         print('save image after transform')
-#         im_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-#         cv2.imwrite('post_process_images/'+str(c[0])+'_savedImage.jpg', im_rgb)
-#         print('joints_3d after :', joints_3d)
-#         print('joints_3d_visible', joints_3d_visible)
-#         time.sleep(3)
+# #         print('save image after transform')
+# #         im_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+# #         cv2.imwrite('post_process_images/'+str(c[0])+'_savedImage.jpg', im_rgb)
+# #         print('joints_3d after :', joints_3d)
+# #         print('joints_3d_visible', joints_3d_visible)
+# #         time.sleep(3)
 
 #         # end
 #         results['img'] = img
 #         results['joints_3d'] = joints_3d
 #         results['joints_3d_visible'] = joints_3d_visible
-#         print(type(results['img']))
-#         print(results['img'])
-#         print(type(results['joints_3d']))
-#         print(results['joints_3d'])
-#         print(cc)
+# #         print(type(results['img']))
+# #         print(results['img'])
+# #         print(type(results['joints_3d']))
+# #         print(results['joints_3d'])
+# #         print(cc)
 
-#         print(results['joints_3d'])
-#         print(results['bbox'])
+# #         print(results['joints_3d'])
+# #         print(results['bbox'])
+
+#*****
         cur_head = {}
         cur_head['bbox'] = results['bbox']
         cur_head['img'] = results['img']
@@ -351,22 +353,23 @@ class TopDownAffine:
         new_image.paste(img)
 
         cur_head['final_image'] = new_image
-#         draw = ImageDraw.Draw(cur_head['final_image'])
+#         temp_image = cur_head['final_image'].copy()
+#         draw = ImageDraw.Draw(temp_image)
 #         for idx in range(len(cur_head['x_scaled'])):
 #             x_0 = cur_head['x_scaled'][idx]
 #             y_0 = cur_head['y_scaled'][idx]
 #             draw.ellipse((x_0, y_0, x_0+5, y_0+5), fill=255)
-#         cur_head['final_image'].save('post_process_images/check_final_imgs.jpg')
+#         temp_image.save('post_process_images/check_'+str(cur_head['x_scaled'][0])+'_imgs.jpg')
  
-#         print('scaled', cur_head['x_scaled'])
-#         print('scaled', cur_head['y_scaled'])
         kp_list = []
         for idx in range(len(cur_head['x_scaled'])):
             x_0 = cur_head['x_scaled'][idx]
             y_0 = cur_head['y_scaled'][idx]
             kp_list.append([x_0, y_0, 0.0])
         results['img'] = np.array(cur_head['final_image'])
-        results['joints_3d'] = np.array(kp_list)
+        results['joints_3d'] = np.array(kp_list)      
+#****
+
 #         print(results['img'])
 #         print(results['joints_3d'])
 #         print(cc)

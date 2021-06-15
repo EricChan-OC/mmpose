@@ -101,7 +101,7 @@ class AnimalHorse10Dataset(AnimalBaseDataset):
                 #if obj['image_id'] == 0:
                 #print('obj[bbox]', obj['bbox'])
                 # use 1.25 padded bbox as input
-                center, scale = self._xywh2cs(*obj['bbox'][:4], 1)
+                center, scale = self._xywh2cs(*obj['bbox'][:4], 1.25)
 
                 image_file = os.path.join(self.img_prefix,
                                           self.id2name[img_id])
