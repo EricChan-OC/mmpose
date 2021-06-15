@@ -95,9 +95,9 @@ data_cfg = dict(
 
 train_pipeline = [
     dict(type='LoadImageFromFile'),
-#     dict(type='TopDownRandomFlip', flip_prob=0.5),
-#     dict(
-#         type='TopDownGetRandomScaleRotation', rot_factor=40, scale_factor=0.5),
+    dict(type='TopDownRandomFlip', flip_prob=0.5),
+    dict(
+        type='TopDownGetRandomScaleRotation', rot_factor=40, scale_factor=0.5),
     dict(type='TopDownAffine'),
     dict(type='ToTensor'),
     dict(
@@ -142,19 +142,19 @@ data = dict(
     train=dict(
         type=dataset_type,
         ann_file=f'{data_root}/annotations/train.json',
-        img_prefix=f'{data_root}/images/',
+        img_prefix=f'{data_root}/images/train_img/',
         data_cfg=data_cfg,
         pipeline=train_pipeline),
     val=dict(
         type=dataset_type,
         ann_file=f'{data_root}/annotations/val.json',
-        img_prefix=f'{data_root}/images/',
+        img_prefix=f'{data_root}/images/val_img/',
         data_cfg=data_cfg,
         pipeline=val_pipeline),
     test=dict(
         type=dataset_type,
         ann_file=f'{data_root}/annotations/test.json',
-        img_prefix=f'{data_root}/images/',
+        img_prefix=f'{data_root}/images/test_img/',
         data_cfg=data_cfg,
         pipeline=test_pipeline),
 )

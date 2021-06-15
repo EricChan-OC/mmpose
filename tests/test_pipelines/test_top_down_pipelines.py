@@ -50,8 +50,6 @@ def _check_normalize(origin_imgs, result_imgs, norm_cfg):
 
 
 def _box2cs(box, image_size):
-    print(' _box2cs')
-    print(image_size, box)
     x, y, w, h = box[:4]
 
     aspect_ratio = 1. * image_size[0] / image_size[1]
