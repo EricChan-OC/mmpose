@@ -6,14 +6,7 @@ from mmpose.core.post_processing import (affine_transform, fliplr_joints,
                                          warp_affine_joints)
 from mmpose.datasets.registry import PIPELINES
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 import time
-from PIL import Image, ImageDraw
-=======
->>>>>>> parent of 7c56a2c... update cofigs
-=======
->>>>>>> parent of 7c56a2c... update cofigs
 
 @PIPELINES.register_module()
 class TopDownRandomFlip:
@@ -33,7 +26,7 @@ class TopDownRandomFlip:
         self.flip_prob = flip_prob
 
     def __call__(self, results):
-        print('TopDownRandomFlip')
+        #print('TopDownRandomFlip')
         """Perform data augmentation with random image flip."""
         img = results['img']
         joints_3d = results['joints_3d']
@@ -160,7 +153,7 @@ class TopDownGetRandomScaleRotation:
         self.rot_prob = rot_prob
 
     def __call__(self, results):
-        print('TopDownGetRandomScaleRotation')
+        #print('TopDownGetRandomScaleRotation')
         """Perform data augmentation with random scaling & rotating."""
         s = results['scale']
 
@@ -226,6 +219,11 @@ class TopDownAffine:
                     joints_3d[i,
                               0:2] = affine_transform(joints_3d[i, 0:2], trans)
 
+                    
+#         print('save image')
+#         im_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+#         cv2.imwrite('ori_images/cropped_image'+str(c[0])+'.jpg', im_rgb)
+        #time.sleep(3)
         results['img'] = img
         results['joints_3d'] = joints_3d
         results['joints_3d_visible'] = joints_3d_visible
@@ -686,7 +684,7 @@ class TopDownRandomTranslation:
 
     def __call__(self, results):
         """Perform data augmentation with random translation."""
-        print('TopDownRandomTranslation')
+        #print('TopDownRandomTranslation')
         center = results['center']
         scale = results['scale']
         if np.random.rand() <= self.trans_prob:

@@ -1,1 +1,1 @@
-{"best_score": 0.7204545454545455, "best_ckpt": "/home/ubuntu/mmpose/training_result/horse_head_black/resnet/epoch_80.pth", "key_indicator": "PCK"}
+{"best_score": 0.9, "best_ckpt": "/home/ubuntu/mmpose/training_result/horse_head_black/resnet/epoch_80.pth", "key_indicator": "PCK"}
