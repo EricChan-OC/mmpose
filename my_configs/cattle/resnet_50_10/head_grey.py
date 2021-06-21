@@ -3,7 +3,7 @@ load_from = None
 resume_from = None
 dist_params = dict(backend='nccl')
 workflow = [('train', 1)]
-checkpoint_config = dict(interval=100)
+checkpoint_config = dict(interval=210)
 evaluation = dict(interval=5, metric='PCK', key_indicator='PCK')
 COLOR = 'grey'
 EXTEND = '10'
