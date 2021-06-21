@@ -130,3 +130,5 @@ json_data/
 video_data/
 training_result/
 train_result/
+train_model.sh
+train_model.txt
