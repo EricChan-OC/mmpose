@@ -1,0 +1,9 @@
+my_configs/cattle/resnet_50_5/spine_black.py train_result/cattle/resnet_50_5/spine_black/
+my_configs/cattle/resnet_50_5/leg_front_black.py train_result/cattle/resnet_50_5/leg_front_black/
+my_configs/cattle/resnet_50_5/leg_back_black.py train_result/cattle/resnet_50_5/leg_back_black/
+my_configs/cattle/resnet_50_5/spine_black.py train_result/cattle/resnet_50_5/spine_black/
+my_configs/cattle/resnet_50_5/leg_front_black.py train_result/cattle/resnet_50_5/leg_front_black/
+my_configs/cattle/resnet_50_5/leg_back_black.py train_result/cattle/resnet_50_5/leg_back_black/
+my_configs/cattle/resnet_50_5/spine_grey.py train_result/cattle/resnet_50_5/spine_grey/
+my_configs/cattle/resnet_50_5/leg_front_grey.py train_result/cattle/resnet_50_5/leg_front_grey/
+my_configs/cattle/resnet_50_5/leg_back_grey.py train_result/cattle/resnet_50_5/leg_back_grey/
