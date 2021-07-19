@@ -132,3 +132,5 @@ training_result/
 train_result/
 train_model.sh
 train_model.txt
+json_data_v3/
+video inference/csv_data/
