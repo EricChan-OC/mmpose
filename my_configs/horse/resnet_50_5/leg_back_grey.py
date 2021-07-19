@@ -3,10 +3,10 @@ load_from = None
 resume_from = None
 dist_params = dict(backend='nccl')
 workflow = [('train', 1)]
-checkpoint_config = dict(interval=210)
+checkpoint_config = dict(interval=220)
 evaluation = dict(interval=5, metric='PCK', key_indicator='PCK')
-COLOR = 'black'
-EXTEND = '10'
+COLOR = 'grey'
+EXTEND = '5'
 
 optimizer = dict(
     type='Adam',
@@ -102,9 +102,27 @@ val_pipeline = [
         ]),
 ]
 
-test_pipeline = val_pipeline
+test_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(type='TopDownAffine'),
+    dict(type='ToTensor'),
+    dict(
+        type='NormalizeTensor',
+        mean=[0.485, 0.456, 0.406],
+        std=[0.229, 0.224, 0.225]),
+    dict(
+        type='Collect',
+        keys=['img'],
+        meta_keys=[
+            'image_file', 'center', 'scale', 'rotation', 'bbox_score',
+            'flip_pairs'
+        ]),
+]
+
+
 dataset_type = 'AnimalHorse10Dataset'
-data_root = 'data/cattle/training_data/cattle_leg_back_256_'+COLOR+'_'+EXTEND
+data_root = 'data/horse/training_data/horse_leg_back_256'+'_'+COLOR+'_'+EXTEND
+
 data = dict(
     samples_per_gpu=32,
     workers_per_gpu=2,

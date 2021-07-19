@@ -5,8 +5,8 @@ dist_params = dict(backend='nccl')
 workflow = [('train', 1)]
 checkpoint_config = dict(interval=210)
 evaluation = dict(interval=5, metric='PCK', key_indicator='PCK')
-COLOR = 'black'
-EXTEND = '10'
+COLOR = 'grey'
+EXTEND = '15'
 
 optimizer = dict(
     type='Adam',

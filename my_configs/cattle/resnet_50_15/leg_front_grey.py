@@ -5,8 +5,8 @@ dist_params = dict(backend='nccl')
 workflow = [('train', 1)]
 checkpoint_config = dict(interval=210)
 evaluation = dict(interval=5, metric='PCK', key_indicator='PCK')
-COLOR = 'black'
-EXTEND = '10'
+COLOR = 'grey'
+EXTEND = '15'
 
 optimizer = dict(
     type='Adam',
@@ -104,7 +104,8 @@ val_pipeline = [
 
 test_pipeline = val_pipeline
 dataset_type = 'AnimalHorse10Dataset'
-data_root = 'data/cattle/training_data/cattle_leg_back_256_'+COLOR+'_'+EXTEND
+data_root = 'data/cattle/training_data/cattle_leg_front_256_'+COLOR+'_'+EXTEND
+
 data = dict(
     samples_per_gpu=32,
     workers_per_gpu=2,
