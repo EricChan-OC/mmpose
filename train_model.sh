@@ -4,11 +4,10 @@ for animal in 'horse'
 do
   for model in 'resnet_50'
   do
-    for color in 'grey' 'black'
+    for color in 'black' 'grey'
     do
       for part in "head_left"
-      do
-      
+      do      
           if [ $part = "head_front" ]
           then
             for extend in '0' '5' '10'
