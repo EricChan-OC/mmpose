@@ -113,6 +113,7 @@ def _box2cs(cfg, box):
     scale = np.array([w / 200.0, h / 200.0], dtype=np.float32)
 
     scale = scale * 1.25
+    print("what")
 
     return center, scale
 
@@ -208,6 +209,7 @@ def process_model(model,  dataset,person_results, img_or_path):
                       [16, 17], [18, 19]]
     else:
         raise NotImplementedError()
+    print("haha")
     batch_data = []
     for bbox in bboxes:
         center, scale = _box2cs(cfg, bbox)
@@ -237,7 +239,9 @@ def process_model(model,  dataset,person_results, img_or_path):
                 'flip_pairs': flip_pairs
             }
         }
+        print("yes11")
         data = test_pipeline(data)
+        print("yes12")
         batch_data.append(data)
     batch_data = collate(batch_data, samples_per_gpu=1)
     if next(model.parameters()).is_cuda:
@@ -273,10 +277,12 @@ device = tr.device("cuda:0" if tr.cuda.is_available() else "cpu")
 
 
 model_head = init_pose_model(config='train_head_resnet.py', checkpoint='epoch_210.pth', device = device)
-model_spine = init_pose_model(config='train_spine_resnet.py', checkpoint='spine_best.pth', device = device)
+model_spine = init_pose_model(config='spine_black.py', checkpoint='spine_black.pth', device = device)
 
 dataset_head = model_head.cfg.data['test']['type']
 dataset_spine = model_spine.cfg.data['test']['type']
+
+print("tt")
 
 
 #poses, heatmap = _inference_single_pose_model(model, img_or_path, bboxes_xywh, dataset, return_heatmap=return_heatmap)
@@ -296,11 +302,14 @@ image = cv2.imread('test_one_cow.jpg')
 
 # 'name': 'Head', 'left': 508.40299129486084, 'top': 218.73074993491173, 'width': 135.03000140190125, 'height': 116.78100228309631
 head_box_1 = [508.40299129486084, 218.73074993491173, 135.03000140190125, 116.78100228309631]
+head_box_1 = [1450.521583557129, 43.61040115356445, 221.79840087890625, 729.4860291481018]
 head_result = []
 head_result.append({'bbox': head_box_1})
 
 preds, _ = process_model(model_head, dataset_head, head_result, image)
+print("K")
 img = vis_pose(image, preds)
+print("N")
 
 cow_box_1 = [234.15699899196625, 222.9727528989315, 411.599999666214, 267.4979969859123]
 body_result = []
@@ -308,13 +317,16 @@ body_result.append({'bbox': cow_box_1})
 
 preds2, _ = process_model(model_spine, dataset_spine, body_result, image)
 img = vis_pose(img, preds2)
+print("A")
 
 for bbox in [head_box_1, cow_box_1]:
     x,y,w,h = bbox
     cv2.rectangle(img, (int(x), int(y)), (int(x+w), int(y+h)), (255, 0, 0), 2)
+print("B")
 
-cv2.imshow('image',img)
-cv2.waitKey(0)
+#cv2.imshow('image',img)
+#cv2.waitKey(0)
+cv2.imwrite('test0.jpg', img)
 
 
 

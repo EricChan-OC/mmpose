@@ -83,10 +83,15 @@ class Compose:
         Returns:
             dict: Transformed data.
         """
+        print(self.transforms)
         for t in self.transforms:
+            print(t)
             data = t(data)
+            print("ak47")
+            print(data['img'].shape)
             if data is None:
                 return None
+        exit()
         return data
 
     def __repr__(self):
